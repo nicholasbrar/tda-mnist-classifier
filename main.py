@@ -27,7 +27,7 @@ def compute_persistence_diagram(point_cloud, metric="euclidean", homology_dimens
     VR = VietorisRipsPersistence(metric=metric, homology_dimensions=homology_dimensions)
     return VR.fit_transform(point_cloud)
 
-def compute_persistence_image(diagram, sigma=0.5, n_bins=10, weight_function=None, output_path="persistence_image.png"):
+def compute_persistence_image(diagram, sigma=0.5, n_bins=10, weight_function=None):
     p_image = PersistenceImage(sigma=sigma, n_bins=n_bins, weight_function=weight_function)
     return p_image.fit_transform(diagram)
 
