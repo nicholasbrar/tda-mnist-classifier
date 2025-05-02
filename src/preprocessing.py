@@ -7,9 +7,8 @@ def binarize_digit(flat_img, threshold = 0.3, morph_clean=True):
     
     # Apply morphological opening to remove small noise if morph_clean is True
     if morph_clean:
-        # Create a 2x2 elliptical kernel for morphological operations
-        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
 
+        kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2,2))
         binary_img = cv2.morphologyEx(binary_img, cv2.MORPH_OPEN, kernel)
     
     return binary_img

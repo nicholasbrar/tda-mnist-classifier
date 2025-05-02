@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.datasets import fetch_openml
 from sklearn.model_selection import train_test_split
 
-def load_mnist(train_size=5000):
+def load_mnist(train_size=10000):
     print("Loading MNIST data...")
     X, y = fetch_openml('mnist_784', version=1, as_frame=False, return_X_y=True)
     # Convert '1' - '9' to integers 1 - 9
