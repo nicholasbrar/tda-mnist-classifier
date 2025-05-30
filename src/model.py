@@ -9,12 +9,14 @@ from sklearn import set_config
 from tqdm import tqdm
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.pipeline import Pipeline
+from sklearn.metrics import f1_score
+from sklearn.feature_selection import SelectKBest, mutual_info_classif
 
 X, y = fetch_openml("mnist_784", version=1, return_X_y=True)
 X = X.to_numpy().reshape((-1, 28, 28))
 y = y.to_numpy()  
 
-train_size, test_size = 100, 10
+train_size, test_size = 500, 100
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, train_size=train_size, test_size=test_size, stratify=y, random_state=666
 )
@@ -66,7 +68,6 @@ tda_union = make_union(
     n_jobs=-1
 )
 
-from sklearn.feature_selection import SelectKBest, mutual_info_classif
 
 tda_union = make_pipeline(
     tda_union,
@@ -78,7 +79,7 @@ set_config(display='diagram')
 
 full_pipeline = Pipeline([
     ('tda_features', tda_union),  
-    ('classifier', RandomForestClassifier(random_state=42))  
+    ('classifier', RandomForestClassifier(random_state=42, n_estimators=10))  
 ], verbose=True)
 
 full_pipeline.fit(X_train, y_train)
@@ -86,6 +87,6 @@ full_pipeline.fit(X_train, y_train)
 accuracy = full_pipeline.score(X_test, y_test)
 print(f"\nTest accuracy: {accuracy:.2%}")
 
-print("\nPredictions vs Actual:")
-for pred, true in zip(full_pipeline.predict(X_test), y_test):
-    print(f"Predicted: {pred}, Actual: {true}")
+y_pred = full_pipeline.predict(X_test)
+f1 = f1_score(y_test, y_pred, average='weighted')
+print(f"Test F1 Score (weighted): {f1:.4f}")
